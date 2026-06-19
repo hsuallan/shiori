@@ -48,8 +48,64 @@ export async function handleApiError(error) {
 	return "Unknown error occurred";
 }
 
+function parseJWT(token) {
+	try {
+		return JSON.parse(atob(token.split(".")[1]));
+	} catch (e) {
+		return null;
+	}
+}
+
+let refreshPromise = null;
+
 // Makes an API request with proper error handling
 export async function apiRequest(url, options = {}) {
+	const urlString = url.toString();
+	const isAuthRequest =
+		urlString.includes("auth/refresh") ||
+		urlString.includes("auth/login") ||
+		urlString.includes("auth/logout");
+
+	if (!isAuthRequest) {
+		const token = localStorage.getItem("shiori-token");
+		if (token) {
+			const claims = parseJWT(token);
+			if (claims && claims.exp) {
+				const timeRemaining = claims.exp * 1000 - Date.now();
+				const threshold =
+					localStorage.getItem("shiori-remember-me") === "true"
+						? 24 * 60 * 60 * 1000 // 1 day
+						: 10 * 60 * 1000; // 10 minutes
+
+				if (timeRemaining > 0 && timeRemaining < threshold) {
+					if (!refreshPromise) {
+						refreshPromise = (async () => {
+							try {
+								const json = await apiRequest(
+									new URL("api/v1/auth/refresh", document.baseURI),
+									{ method: "POST" }
+								);
+								document.cookie = `token=${json.token}; Path=${
+									new URL(document.baseURI).pathname
+								}; Expires=${new Date(json.expires * 1000).toUTCString()}`;
+								localStorage.setItem("shiori-token", json.token);
+								localStorage.setItem(
+									"shiori-account",
+									JSON.stringify(parseJWT(json.token).account)
+								);
+							} catch (err) {
+								console.error("Auto token refresh failed:", err);
+							} finally {
+								refreshPromise = null;
+							}
+						})();
+					}
+					await refreshPromise;
+				}
+			}
+		}
+	}
+
 	try {
 		const response = await fetch(url, {
 			...options,

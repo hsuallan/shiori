@@ -123,6 +123,7 @@ export default {
 					"shiori-account",
 					JSON.stringify(this.parseJWT(json.token).account),
 				);
+				localStorage.setItem("shiori-remember-me", this.remember ? "true" : "false");
 
 				this.visible = false;
 				this.$emit("login-success");
