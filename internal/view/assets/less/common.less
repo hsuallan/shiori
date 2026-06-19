@@ -631,20 +631,31 @@ a {
 				color: var(--color);
 
 				span {
-					&:last-child {
-						font-size: 1em;
-						color: var(--colorLink);
-						margin-left: 4px;
+					font-size: 1em;
+					color: var(--colorLink);
+					margin-left: 4px;
 
-						&::before {
-							content: "(";
-							margin-right: 2px;
-						}
+					&::before {
+						content: "(";
+						margin-right: 2px;
+					}
 
-						&::after {
-							content: ")";
-							margin-left: 2px;
-						}
+					&::after {
+						content: ")";
+						margin-left: 2px;
+					}
+				}
+
+				i.fa-trash-alt {
+					margin-left: 8px;
+					color: var(--colorLink);
+					cursor: pointer;
+					opacity: 0.6;
+					transition: opacity 0.2s, color 0.2s;
+
+					&:hover {
+						color: #ff3b30;
+						opacity: 1;
 					}
 				}
 

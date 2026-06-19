@@ -81,7 +81,7 @@ var template = `
         <a @click="filterTag('*')">(all tagged)</a>
         <a @click="filterTag('*', true)">(all untagged)</a>
         <a v-for="tag in tags" @click="dialogTagClicked($event, tag)">
-            #{{tag.name}}<span>{{tag.bookmark_count}}</span>
+            #{{tag.name}}<span>{{tag.bookmark_count}}</span><i v-if="activeAccount.owner" class="fas fa-trash-alt" @click.stop="deleteTag(tag)"></i>
         </a>
     </custom-dialog>
     <custom-dialog v-bind="dialog"/>
@@ -377,7 +377,8 @@ export default {
 					},
 					{
 						name: "tags",
-						label: "Comma separated tags (optional)",
+						label: "Tags",
+						type: "tags",
 						separator: ",",
 						dictionary: this.tags.map((tag) => tag.name),
 					},
@@ -487,6 +488,7 @@ export default {
 					{
 						name: "tags",
 						label: "Tags",
+						type: "tags",
 						value: strTags,
 						separator: ",",
 						dictionary: this.tags.map((tag) => tag.name),
@@ -796,7 +798,8 @@ export default {
 				fields: [
 					{
 						name: "tags",
-						label: "Comma separated tags",
+						label: "Tags",
+						type: "tags",
 						value: "",
 						separator: ",",
 						dictionary: this.tags.map((tag) => tag.name),
@@ -926,6 +929,23 @@ export default {
 					}
 				},
 			});
+		},
+		async deleteTag(tag) {
+			if (!confirm(`Are you sure you want to delete tag "#${tag.name}"?`)) {
+				return;
+			}
+
+			try {
+				await apiRequest(
+					new URL("api/v1/tags/" + tag.id, document.baseURI),
+					{
+						method: "DELETE",
+					}
+				);
+				this.loadData(false, true);
+			} catch (err) {
+				this.showErrorDialog(err.message);
+			}
 		},
 	},
 	mounted() {
