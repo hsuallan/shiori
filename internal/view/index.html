@@ -16,6 +16,33 @@
 	<link rel="manifest" href="assets/manifest.webmanifest" />
 
 	<link href="assets/css/style.css" rel="stylesheet">
+	<style type="text/css">
+		#dialog-tags .custom-dialog-body a span {
+			font-size: 1em;
+			color: var(--colorLink);
+			margin-left: 4px;
+		}
+		#dialog-tags .custom-dialog-body a span::before {
+			content: "(";
+			margin-right: 2px;
+		}
+		#dialog-tags .custom-dialog-body a span::after {
+			content: ")";
+			margin-left: 2px;
+		}
+		#dialog-tags .custom-dialog-body a i.fa-trash-alt {
+			margin-left: 8px;
+			color: var(--colorLink);
+			cursor: pointer;
+			opacity: 0.6;
+			transition: opacity 0.2s, color 0.2s;
+		}
+		#dialog-tags .custom-dialog-body a i.fa-trash-alt:hover {
+			color: #ff3b30;
+			opacity: 1;
+		}
+	</style>
+
 
 	<script src="assets/js/vue.min.js" type="text/javascript"></script>
 	<script src="assets/js/url.min.js" type="text/javascript"></script>

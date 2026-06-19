@@ -126,6 +126,69 @@
 				color: var(--color);
 				font-size: 0.9em;
 			}
+
+			.tag-editor {
+				display: flex;
+				flex-flow: column nowrap;
+				position: relative;
+				min-width: 0;
+				width: 100%;
+
+				.tag-badge-container {
+					display: flex;
+					flex-flow: row wrap;
+					align-items: center;
+					gap: 4px;
+					padding: 4px;
+					border: 1px solid var(--border);
+					background-color: var(--contentBg);
+					min-height: 38px;
+					box-sizing: border-box;
+					width: 100%;
+
+					.tag-badge {
+						display: inline-flex;
+						align-items: center;
+						gap: 6px;
+						background-color: var(--border);
+						color: var(--color);
+						padding: 2px 8px;
+						border-radius: 4px;
+						font-size: 0.9em;
+						line-height: 1.4;
+
+						.tag-badge-remove {
+							cursor: pointer;
+							font-size: 0.8em;
+							opacity: 0.6;
+							transition: opacity 0.2s;
+
+							&:hover {
+								opacity: 1;
+								color: #ff5252;
+							}
+						}
+					}
+
+					.tag-input-container {
+						flex: 1 1 60px;
+						min-width: 60px;
+						display: flex;
+						align-items: center;
+
+						.tag-input {
+							width: 100%;
+							border: none !important;
+							background-color: transparent !important;
+							color: var(--color);
+							padding: 4px 0 4px 4px !important;
+							font-size: 1em;
+							outline: none;
+							box-shadow: none !important;
+						}
+					}
+				}
+			}
 		}
 
 		.custom-dialog-footer {

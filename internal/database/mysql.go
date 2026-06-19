@@ -228,7 +228,7 @@ func (db *MySQLDatabase) SaveBookmarks(ctx context.Context, create bool, bookmar
 			// Save book tags
 			newTags := []model.TagDTO{}
 			for _, tag := range book.Tags {
-				t := tag.ToDTO()
+				t := tag
 				// If it's deleted tag, delete and continue
 				if t.Deleted {
 					_, err = stmtDeleteBookTag.ExecContext(ctx, book.ID, t.ID)
