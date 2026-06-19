@@ -20,13 +20,16 @@ export const useAuthStore = defineStore('auth', () => {
 
   // Create API client with auth token
   const getApiClient = () => {
+    const headers: Record<string, string> = {
+      'X-Shiori-Response-Format': 'new'
+    }
+    if (token.value) {
+      headers['Authorization'] = `Bearer ${token.value}`
+    }
     const config = new Configuration({
-      basePath: 'http://localhost:8080',
+      basePath: import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080',
       accessToken: token.value || undefined,
-      headers: token.value ? {
-        'Authorization': `Bearer ${token.value}`,
-        'X-Shiori-Response-Format': 'new'
-      } : undefined
+      headers,
     })
     return new AuthApi(config)
   }
