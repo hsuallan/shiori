@@ -147,6 +147,7 @@ export default {
 
 				localStorage.removeItem("shiori-account");
 				localStorage.removeItem("shiori-token");
+				localStorage.removeItem("shiori-remember-me");
 
 				// Reload page
 				window.location.reload();

@@ -52,3 +52,18 @@ func HandleAssets(deps model.Dependencies, c model.WebContext) {
 	}
 	http.StripPrefix("/assets/", http.FileServer(newAssetsFS(fs, deps.Config().Http.ServeWebUIV2))).ServeHTTP(c.ResponseWriter(), c.Request())
 }
+
+// HandleServiceWorker serves the service worker file
+func HandleServiceWorker(deps model.Dependencies, c model.WebContext) {
+	c.ResponseWriter().Header().Set("Content-Type", "application/javascript")
+	fs := views.Assets
+	if deps.Config().Http.ServeWebUIV2 {
+		fs = webapp.Assets
+	}
+	content, err := fs.ReadFile("sw.js")
+	if err != nil {
+		c.ResponseWriter().Write([]byte("// Empty service worker\nself.addEventListener('fetch', function(event) {});"))
+		return
+	}
+	c.ResponseWriter().Write(content)
+}

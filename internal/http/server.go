@@ -101,6 +101,10 @@ func (s *HttpServer) Setup(cfg *config.Config, deps *dependencies.Dependencies) 
 			handlers.HandleAssets,
 			globalMiddleware...,
 		))
+		s.mux.HandleFunc("GET /sw.js", ToHTTPHandler(deps,
+			handlers.HandleServiceWorker,
+			globalMiddleware...,
+		))
 	}
 
 	// API v1 routes

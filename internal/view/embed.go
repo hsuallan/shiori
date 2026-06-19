@@ -2,7 +2,7 @@ package views
 
 import "embed"
 
-//go:embed assets/js/* assets/css/* assets/res/* assets/manifest.webmanifest
+//go:embed assets/js/* assets/css/* assets/res/* assets/manifest.webmanifest sw.js
 var Assets embed.FS
 
 //go:embed *.html
